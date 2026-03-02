@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="theme-color" content="#9d7ce8">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>FizzCipher Bypasser — Legal Disclaimer</title>
+
+  <style>
+    :root {
+      --primary: #9d7ce8;
+      --primary-dark: #7a5ac4;
+      --bg-dark: rgba(30, 30, 30, 0.9);
+      --text-main: #ffffff;
+      --text-muted: #cfcfcf;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      margin: 0;
+      overflow: visible;
+    }
+
+    .overlay {
+      display: none; /* Hide overlay when in iframe */
+    }
+
+    .modal {
+      position: relative;
+      max-width: 600px;
+      width: calc(100% - 40px);
+      max-height: 90vh;
+      max-height: 90dvh;
+      background: rgba(20, 20, 28, 0.85);
+      backdrop-filter: blur(30px) saturate(180%);
+      -webkit-backdrop-filter: blur(30px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 48px 40px;
+      padding-top: 60px;
+      z-index: 10;
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+        0 4px 16px rgba(157, 124, 232, 0.15);
+      margin: 20px auto;
+      overflow-y: auto;
+      overflow-x: visible;
+      box-sizing: border-box;
+      contain: layout style;
+      -webkit-overflow-scrolling: touch;
+      /* Optimize scrolling performance */
+      will-change: scroll-position;
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .badge {
+      position: absolute;
+      top: -10px;
+      right: 20px;
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 16px rgba(255, 152, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.3);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      text-transform: uppercase;
+      white-space: nowrap;
+      z-index: 100;
+      pointer-events: none;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), #4a9eff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      margin-bottom: 32px;
+      letter-spacing: -0.5px;
+    }
+
+    .content {
+      color: var(--text-main);
+      font-size: 15.5px;
+      line-height: 1.85;
+      text-align: center;
+      margin-bottom: 36px;
+    }
+
+    .content p {
+      margin-bottom: 20px;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 400;
+    }
+
+    .content strong {
+      color: #ffffff;
+      font-weight: 600;
+      background: linear-gradient(135deg, rgba(157, 124, 232, 0.2), rgba(74, 158, 255, 0.2));
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 14px;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(157, 124, 232, 0.3);
+      letter-spacing: 0.3px;
+      min-height: 48px; /* Better touch target */
+      touch-action: manipulation;
+      will-change: transform;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    }
+
+    .btn:hover:not(:disabled) {
+      box-shadow: 0 8px 24px rgba(157, 124, 232, 0.5);
+    }
+
+    .btn:hover:not(:disabled)::before {
+      left: 100%;
+    }
+
+    .btn:active:not(:disabled) {
+      opacity: 0.9;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .telegram-link-section {
+      margin-top: 24px;
+      text-align: center;
+    }
+
+    .telegram-link-section p {
+      margin: 0;
+    }
+
+    .telegram-link {
+      color: #0088cc;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(0, 136, 204, 0.1);
+      border: 1px solid rgba(0, 136, 204, 0.3);
+    }
+
+    .telegram-link:hover {
+      background: rgba(0, 136, 204, 0.2);
+      border-color: #0088cc;
+      color: #00a0e0;
+      transform: translateY(-1px);
+    }
+
+    .god-version-notice {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .god-version-notice p {
+      color: #ff4444;
+      font-size: 14px;
+      font-weight: 700;
+      margin: 0;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 8px rgba(255, 68, 68, 0.3);
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.5);
+      text-align: center;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    /* Responsive Design - Mobile/Phone */
+    @media (max-width: 768px) {
+      body {
+        padding: 16px;
+      }
+
+      .modal {
+        padding: 32px 24px;
+        padding-top: 50px;
+        border-radius: 20px;
+        max-width: calc(100% - 32px);
+        max-height: calc(100vh - 32px);
+        max-height: calc(100dvh - 32px);
+        width: 100%;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        overflow-x: visible;
+      }
+      
+      /* Disable hover effects on touch devices */
+      @media (hover: none) {
+        .btn:hover {
+          box-shadow: 0 4px 16px rgba(157, 124, 232, 0.3) !important;
+        }
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      .content {
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 24px;
+      }
+
+      .content p {
+        margin-bottom: 14px;
+      }
+
+      .btn {
+        padding: 14px 20px;
+        font-size: 15px;
+        border-radius: 12px;
+      }
+
+      .badge {
+        top: -8px;
+        right: 16px;
+        padding: 6px 12px;
+        font-size: 10px;
+        white-space: nowrap;
+      }
+
+      .telegram-link {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
+
+      .god-version-notice p {
+        font-size: 12px;
+      }
+
+      footer {
+        margin-top: 20px;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+
+      .modal {
+        padding: 28px 20px;
+        padding-top: 48px;
+        border-radius: 18px;
+        max-width: calc(100% - 24px);
+        max-height: calc(100vh - 24px);
+        overflow-x: visible;
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-bottom: 18px;
+      }
+
+      .content {
+        font-size: 13.5px;
+        line-height: 1.65;
+        margin-bottom: 20px;
+      }
+
+      .content p {
+        margin-bottom: 12px;
+      }
+
+      .content strong {
+        padding: 2px 4px;
+        font-size: 13px;
+      }
+
+      .btn {
+        padding: 13px 18px;
+        font-size: 14px;
+        border-radius: 10px;
+      }
+
+      .badge {
+        top: -6px;
+        right: 12px;
+        padding: 5px 10px;
+        font-size: 9px;
+        white-space: nowrap;
+      }
+
+      .telegram-link {
+        font-size: 13px;
+        padding: 5px 10px;
+      }
+
+      .god-version-notice p {
+        font-size: 11px;
+      }
+
+      footer {
+        margin-top: 16px;
+        font-size: 10px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      body {
+        padding: 10px;
+      }
+
+      .modal {
+        padding: 24px 16px;
+        border-radius: 16px;
+        max-width: calc(100% - 20px);
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-bottom: 16px;
+      }
+
+      .content {
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+
+      .btn {
+        padding: 12px 16px;
+        font-size: 13px;
+      }
+    }
+
+    /* Landscape phone orientation */
+    @media (max-width: 896px) and (max-height: 500px) and (orientation: landscape) {
+      .modal {
+        padding: 24px 28px;
+        max-height: calc(100vh - 20px);
+      }
+
+      h1 {
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+
+      .content {
+        font-size: 13px;
+        margin-bottom: 16px;
+      }
+
+      .content p {
+        margin-bottom: 10px;
+      }
+
+      .btn {
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+    }
+
+    @media (max-height: 700px) {
+      .modal {
+        padding: 32px 28px;
+        max-height: calc(100vh - 20px);
+      }
+
+      h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+      }
+
+      .content {
+        margin-bottom: 24px;
+      }
+
+      .content p {
+        margin-bottom: 12px;
+      }
+    }
+  </style>
+  <script type="module" crossorigin src="/chunks/disclaimer-Bnn4cPhE.js"></script>
+  <link rel="modulepreload" crossorigin href="/chunks/_virtual_wxt-html-plugins-YP0FEG5d.js">
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <div class="modal" role="dialog" aria-labelledby="disclaimer-title">
+    <div class="badge">Version 1.0</div>
+    <h1 id="disclaimer-title">Access & Usage Notice</h1>
+
+    <div class="content">
+      <p>
+        This software is provided strictly for <strong>educational and research purposes only</strong>.
+      </p>
+      <p>
+        The developers do not promote or support illegal activities, abuse of systems,
+        or violations of any platform’s terms of service.
+      </p>
+      <p>
+        You acknowledge that you are solely responsible for your actions and any
+        consequences arising from the use of this software.
+      </p>
+      <p>
+        If you do not agree with these terms, please discontinue use immediately.
+      </p>
+    </div>
+
+    <button class="btn" id="acceptBtn">I Understand &amp; Agree</button>
+
+    <div class="telegram-link-section">
+      <p>
+        <a href="https://t.me/fizz_cipher_1" target="_blank" class="telegram-link">Join t.me/fizz_cipher_1</a>
+      </p>
+    </div>
+
+    <footer>
+       FizzCipher Bypasser
+    </footer>
+  </div>
+
+
+</body>
+</html>

@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+  <meta name="theme-color" content="#4a9eff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>FizzCipher Bypasser - Configuration</title>
+  <style>
+    /* Critical CSS for initial render - no transitions */
+  </style>
+  <script type="module" crossorigin src="/chunks/options-DPrCXzXL.js"></script>
+  <link rel="modulepreload" crossorigin href="/chunks/_virtual_wxt-html-plugins-YP0FEG5d.js">
+  <link rel="modulepreload" crossorigin href="/chunks/performance-helper-5GeLMbm9.js">
+  <link rel="stylesheet" crossorigin href="/assets/options-D5diOasP.css">
+  <!-- License bypass: pre-set storage + fake server "success" so app accepts license -->
+  <script>
+  (function(){
+    var _pay = function() {
+      return JSON.stringify({
+        success: true, licensed: true, valid: true, activated: true,
+        token: 'bypass_token', accessToken: 'bypass_token', access_token: 'bypass_token',
+        expiresAt: '2099-12-31T23:59:59Z', expires_at: '2099-12-31T23:59:59Z', expiry: 4102444799,
+        message: 'OK',
+        data: { success: true, licensed: true, features: ['3ds', 'bypass', 'all'] },
+        user: { licensed: true },
+        features: ['3ds', 'bypass', 'all']
+      });
+    };
+    var _fetch = window.fetch;
+    if (_fetch) {
+      window.fetch = function() {
+        var p = _fetch.apply(this, arguments);
+        return p.then(function(r) {
+          if (r.status === 401 || r.status === 403) {
+            return new Response(_pay(), { status: 200, headers: { 'Content-Type': 'application/json' } });
+          }
+          return r.clone().text().then(function(t) {
+            var bad = t && (t.toLowerCase().indexOf('unauthorized') !== -1 || t.toLowerCase().indexOf('invalid') !== -1 || t.toLowerCase().indexOf('expired') !== -1 || t.toLowerCase().indexOf('login failed') !== -1 || t.toLowerCase().indexOf('too many attempts') !== -1);
+            if (bad) return new Response(_pay(), { status: 200, headers: { 'Content-Type': 'application/json' } });
+            return new Response(t, { status: r.status, statusText: r.statusText, headers: r.headers });
+          }).catch(function() { return r; });
+        });
+      };
+    }
+    var X = window.XMLHttpRequest;
+    if (X) {
+      window.XMLHttpRequest = function() {
+        var xhr = new X();
+        var _open = xhr.open;
+        xhr.open = function(m, url) { _open.apply(xhr, arguments); };
+        var _send = xhr.send;
+        xhr.send = function() {
+          xhr.addEventListener('load', function() {
+            var txt = xhr.responseText || '';
+            var bad = xhr.status === 401 || xhr.status === 403 || (txt && (txt.toLowerCase().indexOf('unauthorized') !== -1 || txt.toLowerCase().indexOf('invalid') !== -1 || txt.toLowerCase().indexOf('expired') !== -1 || txt.toLowerCase().indexOf('login failed') !== -1 || txt.toLowerCase().indexOf('too many attempts') !== -1));
+            if (bad) {
+              var pay = _pay();
+              Object.defineProperty(xhr, 'status', { value: 200, writable: false });
+              Object.defineProperty(xhr, 'responseText', { value: pay, writable: false });
+              Object.defineProperty(xhr, 'response', { value: pay, writable: false });
+            }
+          }, true);
+          return _send.apply(xhr, arguments);
+        };
+        return xhr;
+      };
+    }
+    if (typeof chrome === 'undefined' || !chrome.storage || !chrome.storage.local) return;
+    var setBypass = function(){
+      var key = document.getElementById('licenseKeyInput');
+      var keyVal = (key && key.value && key.value.trim()) ? key.value.trim() : 'DB-BYPASS-0000-0000-0000';
+      chrome.storage.local.set({
+        licenseKey: keyVal,
+        licenseValid: true,
+        license: keyVal,
+        licensed: true,
+        licenseValidated: true,
+        'db_license': keyVal,
+        '3ds_license': true,
+        licenseToken: 'bypass_token',
+        licenseExpiry: 4102444799,
+        licenseExpiresAt: '2099-12-31T23:59:59Z'
+      });
+    };
+    var updateUI = function(){
+      var label = document.getElementById('licenseStatusLabel');
+      var detail = document.getElementById('licenseStatusDetail');
+      var card = document.getElementById('licenseStatusCard');
+      var deactivateRow = document.getElementById('licenseDeactivateRow');
+      var msg = document.getElementById('licenseMessage');
+      if (label) label.textContent = 'Activated';
+      if (detail) detail.textContent = '3DS Bypass is active';
+      if (deactivateRow) deactivateRow.style.display = 'block';
+      if (msg) msg.style.display = 'none';
+      if (card) card.classList.add('licensed');
+    };
+    var runBypass = function(){
+      setBypass();
+      updateUI();
+    };
+    document.addEventListener('DOMContentLoaded', function(){
+      runBypass();
+      var msgEl = document.getElementById('licenseMessage');
+      if (msgEl) {
+        var obs = new MutationObserver(function(){ var s=msgEl.textContent; if (s.indexOf('Unauthorized')!==-1||s.indexOf('Too many attempts')!==-1){ msgEl.style.display='none'; msgEl.textContent=''; updateUI(); }});
+        obs.observe(msgEl, { childList: true, characterData: true, subtree: true });
+      }
+      var btn = document.getElementById('validateLicenseBtn');
+      var input = document.getElementById('licenseKeyInput');
+      if (btn && input) {
+        btn.addEventListener('click', function(e){
+          e.stopImmediatePropagation();
+          e.preventDefault();
+          setBypass();
+          updateUI();
+        }, true);
+      }
+      setInterval(function(){ if (msgEl && (msgEl.textContent.indexOf('Unauthorized')!==-1||msgEl.textContent.indexOf('Too many attempts')!==-1)){ msgEl.style.display='none'; updateUI(); } }, 500);
+    }, true);
+    setBypass();
+  })();
+  </script>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="logo">
+          <img src="/assets/icon48-B7gmLV-e.png" alt="FizzCipher Bypasser Logo">
+        </div>
+        <div class="header-info">
+          <h1>FizzCipher Bypasser</h1>
+          <p class="version">v1.0</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a id="telegramHeaderLink" target="_blank" class="action-icon telegram-link" title="Telegram" aria-label="Telegram">
+
+  <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+    <path d="M9.993 15.674L9.594 19.4c.572 0 .82-.246 1.12-.54l2.684-2.56 5.56 4.06c1.02.564 1.748.27 2-.95L23.98 4.83c.33-1.52-.55-2.12-1.55-1.74L1.9 10.38c-1.48.58-1.46 1.4-.27 1.77l5.53 1.72L19.95 6.2c.64-.4 1.23-.18.75.25L9.993 15.674z" />
+  </svg>
+</a>
+
+        <button class="action-icon" id="licenseKeyIcon" title="License Key">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+          </svg>
+        </button>
+        <button class="action-icon" id="supportedGatewaysIcon" title="Supported Gateways">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+            <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01" />
+          </svg>
+        </button>
+        <button class="action-icon" id="settingsIcon" title="Settings">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3" />
+            <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m18.364-6.364l-4.243 4.243M6.879 17.121l-4.243 4.243m14.728 0l-4.243-4.243M6.879 6.879L2.636 2.636" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Update Available Banner (hidden by default, shown via JS) -->
+    <div id="updateBanner" class="update-banner" style="display:none;">
+      <div class="update-banner-content">
+        <div class="update-banner-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </div>
+        <div class="update-banner-text">
+          <strong>Update Available!</strong>
+          <span id="updateBannerMsg">A new version is available.</span>
+        </div>
+        <a id="updateBannerLink" href="#" target="_blank" class="update-banner-btn" style="display:none;">Download</a>
+        <button id="updateBannerDismiss" class="update-banner-dismiss" title="Dismiss">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Admin Notification Banner (hidden by default, shown via JS) -->
+    <div id="notifBanner" class="notif-banner" style="display:none;">
+      <div class="notif-banner-content">
+        <div class="notif-banner-icon" id="notifBannerIcon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+        </div>
+        <div class="notif-banner-text">
+          <strong id="notifBannerTitle"></strong>
+          <span id="notifBannerMsg"></span>
+        </div>
+        <a id="notifBannerLink" href="#" target="_blank" class="notif-banner-btn" style="display:none;"></a>
+        <button id="notifBannerDismiss" class="notif-banner-dismiss" title="Dismiss">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content - Sidebar + Main Layout -->
+    <main class="main-content">
+      <!-- Left Sidebar - Configuration -->
+      <div class="panel-left">
+        <!-- Status Section -->
+        <div class="config-section">
+          <div class="section-header">
+            <span class="section-label">Status</span>
+            <label class="toggle">
+              <input type="checkbox" id="statusToggle" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="status-context" id="statusContext">
+            <div class="status-state">
+              <span class="status-dot" id="statusStateDot"></span>
+              <div>
+                <p class="status-state-label" id="statusStateText">Active</p>
+                <p class="status-state-subtext" id="statusStateSubtext">Automation ready</p>
+              </div>
+            </div>
+            <div class="status-meta">
+              <div class="status-meta-item">
+                <span class="meta-label">Last Sync</span>
+                <span class="meta-value" id="statusLastSync">--</span>
+              </div>
+              <div class="status-meta-item">
+                <span class="meta-label">Proxy</span>
+                <span class="meta-value muted" id="statusProxyState">Not configured</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Configuration Section -->
+        <div class="config-section">
+          <div class="section-header">
+            <span class="section-label">Configuration</span>
+            <div class="header-buttons">
+              <button class="icon-btn-small" id="createLibraryBtnQuick" title="Create New Library">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+              </button>
+              <button class="icon-btn-small" id="manageLibrariesBtn" title="Manage Libraries">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                  <line x1="9" y1="3" x2="9" y2="21" />
+                  <line x1="15" y1="3" x2="15" y2="21" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="3" y1="15" x2="21" y2="15" />
+                </svg>
+              </button>
+              <button class="icon-btn-small" id="pasteBtn" title="Paste from clipboard">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                  <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="bin-input-container">
+            <label class="input-label">Enter BINs (Default Library)</label>
+            <textarea id="binInput" placeholder="Enter BIN or Full Card (one per line)
+Examples:
+451286
+625967xxxxxxxxxx
+6259689260838573|06|27|765" rows="4"></textarea>
+          </div>
+          
+          <!-- Advanced Section -->
+          <div class="advanced-section">
+            <div class="advanced-header" id="advancedToggle">
+              <span>Advanced</span>
+              <svg class="chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 4.5L6 7.5L9 4.5" />
+              </svg>
+            </div>
+            <div class="advanced-content" id="advancedContent">
+              <div class="form-group">
+                <label>Proxy (Optional)</label>
+                <input type="text" id="proxyInput" placeholder="http://proxy:port or socks5://proxy:port">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Footer with Telegram Links -->
+        <footer class="app-footer">
+          <a id="telegramFooterLink1" target="_blank" class="telegram-footer-link telegram-footer-link-red" title="Telegram Channel">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M9.993 15.674L9.594 19.4c.572 0 .82-.246 1.12-.54l2.684-2.56 5.56 4.06c1.02.564 1.748.27 2-.95L23.98 4.83c.33-1.52-.55-2.12-1.55-1.74L1.9 10.38c-1.48.58-1.46 1.4-.27 1.77l5.53 1.72L19.95 6.2c.64-.4 1.23-.18.75.25L9.993 15.674z" />
+            </svg>
+            <span>FizzCipher</span>
+          </a>
+
+      </div>
+
+      <!-- Mobile Panel Toggle -->
+      <button class="panel-toggle-btn" id="panelToggleBtn" title="Toggle panel">
+        <svg class="panel-toggle-icon panel-toggle-up" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15" />
+        </svg>
+        <span class="panel-toggle-label" id="panelToggleLabel">Hide Settings</span>
+        <svg class="panel-toggle-icon panel-toggle-down" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+
+      <!-- Right Panel - Logs -->
+      <div class="panel-right">
+        <div class="logs-header">
+          <span class="logs-title">Logs</span>
+          <div class="logs-actions">
+            <button class="log-icon-btn" id="exportLogsBtn" title="Export logs">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+            </button>
+            <button class="log-icon-btn" id="copyLogsBtn" title="Copy logs">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+            </button>
+            <button class="log-icon-btn" id="clearLogsBtn" title="Clear logs">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="live-stats-grid" id="liveStatsGrid">
+          <div class="live-stat-card success-rate">
+            <div class="live-stat-label">Success Rate</div>
+            <div class="live-stat-value" id="liveSuccessRate">0%</div>
+            <div class="live-stat-subtext" id="liveSuccessSummary">0 / 0 events</div>
+          </div>
+          <div class="live-stat-card cards-count">
+            <div class="live-stat-label">Cards Logged</div>
+            <div class="live-stat-value" id="liveCardsCount">0</div>
+            <div class="live-stat-subtext" id="liveCardsSummary">Awaiting activity</div>
+          </div>
+          <div class="live-stat-card top-gateway">
+            <div class="live-stat-label">Top Gateway</div>
+            <div class="live-stat-value" id="liveTopGateway">—</div>
+            <div class="live-stat-subtext" id="liveTopGatewaySummary">No data yet</div>
+          </div>
+        </div>
+        
+        <!-- Log Statistics Bar -->
+        <div class="logs-stats-bar">
+          <div class="stat-item">
+            <span class="stat-label">Total</span>
+            <span class="stat-value" id="totalLogsCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">3DS</span>
+            <span class="stat-value stat-3ds" id="threeDSLogsCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Cards</span>
+            <span class="stat-value stat-cards" id="cardLogsCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Success</span>
+            <span class="stat-value stat-success" id="successLogsCount">0</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Errors</span>
+            <span class="stat-value stat-error" id="errorLogsCount">0</span>
+          </div>
+        </div>
+
+        <!-- Search and Filter Bar -->
+        <div class="logs-filter-bar">
+          <div class="search-container">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input type="text" id="logSearchInput" placeholder="Search logs..." class="search-input">
+            <button class="clear-search-btn" id="clearSearchBtn" title="Clear search" style="display: none;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+          <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all" title="All logs">All</button>
+            <button class="filter-btn" data-filter="3ds" title="3DS Bypass logs">3DS</button>
+            <button class="filter-btn" data-filter="cards" title="Card generation logs">Cards</button>
+            <button class="filter-btn" data-filter="success" title="Success logs">Success</button>
+            <button class="filter-btn" data-filter="error" title="Error logs">Errors</button>
+          </div>
+        </div>
+
+        <div class="logs-container">
+          <div class="logs-content" id="logsContent">
+            <div class="log-entry-placeholder">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" opacity="0.3">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+              <p>Welcome to FizzCipher Bypasser v1.0!</p>
+              <p class="placeholder-subtitle">Logs will appear here as events occur</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  
+  <div class="notification" id="notification"></div>
+  
+  <!-- Supported Gateways Popup -->
+  <div id="supportedGatewaysPopup" class="gateways-popup" style="display: none;">
+    <div class="gateways-popup-content">
+      <div class="gateways-popup-header">
+        <h3>Supported Payment Gateways</h3>
+        <button class="gateways-popup-close" id="closeGatewaysPopup">×</button>
+      </div>
+      <div class="gateways-popup-body">
+        <div class="gateway-item">
+          <div class="gateway-icon stripe">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Stripe</div>
+            <div class="gateway-details">Checkout, Invoice, Billings</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon steam">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Steam</div>
+            <div class="gateway-details">Gaming Platform</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon gog">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">GOG</div>
+            <div class="gateway-details">Gaming Platform</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon adyen">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Adyen</div>
+            <div class="gateway-details">Payment Platform</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon square">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 9h6v6H9z" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Square</div>
+            <div class="gateway-details">Payment Processing</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon braintree">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Braintree</div>
+            <div class="gateway-details">Payment Gateway</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon xsolla">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Xsolla<span class="gateway-coming-soon">Coming Soon V2.6</span></div>
+            <div class="gateway-details">Gaming Payments</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon nordpay">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">NordPay</div>
+            <div class="gateway-details">Payment Platform</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon checkout">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Checkout.com</div>
+            <div class="gateway-details">Payment Gateway</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon adyen">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Smart Glocal</div>
+            <div class="gateway-details">Telegram Premium, Payment Platform</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon paddle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">Paddle<span class="gateway-coming-soon">Coming Soon V2.6</span></div>
+            <div class="gateway-details">Payment Platform</div>
+          </div>
+        </div>
+        <div class="gateway-item">
+          <div class="gateway-icon edfapay">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="4" width="18" height="16" rx="2" />
+              <path d="M7 8h10M7 12h10M7 16h5" />
+            </svg>
+          </div>
+          <div class="gateway-info">
+            <div class="gateway-name">EdfaPay</div>
+            <div class="gateway-details">Payment Gateway</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- License Key Popup -->
+  <div id="licenseKeyPopup" class="license-popup" style="display: none;">
+    <div class="license-popup-content">
+      <div class="license-popup-header">
+        <div class="license-header-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4" />
+          </svg>
+        </div>
+        <h3>License Key</h3>
+        <button class="license-popup-close" id="closeLicensePopup">×</button>
+      </div>
+      <div class="license-popup-body">
+        <div class="license-status-card" id="licenseStatusCard">
+          <div class="license-status-icon" id="licenseStatusIcon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 8v4m0 4h.01" />
+            </svg>
+          </div>
+          <div class="license-status-info">
+            <span class="license-status-label" id="licenseStatusLabel">No License</span>
+            <span class="license-status-detail" id="licenseStatusDetail">Enter a license key to activate 3DS Bypass</span>
+          </div>
+        </div>
+        <div class="license-input-group">
+          <label class="license-input-label">License Key</label>
+          <div class="license-input-wrapper">
+            <input type="text" id="licenseKeyInput" class="license-input" placeholder="DB-XXXX-XXXX-XXXX-XXXX" maxlength="24" spellcheck="false" autocomplete="off">
+            <button class="license-validate-btn" id="validateLicenseBtn">
+              <span class="license-btn-text">Activate</span>
+              <span class="license-btn-spinner" style="display: none;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2v4m0 12v4m10-10h-4M6 12H2m15.07-5.07l-2.83 2.83M9.76 14.24l-2.83 2.83m11.14 0l-2.83-2.83M9.76 9.76L6.93 6.93" />
+                </svg>
+              </span>
+            </button>
+          </div>
+          <div class="license-message" id="licenseMessage" style="display: none;"></div>
+        </div>
+        <div class="license-deactivate-row" id="licenseDeactivateRow" style="display: none;">
+          <button class="license-deactivate-btn" id="deactivateLicenseBtn">Deactivate License</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Overlay (hidden by default) -->
+  <div id="settingsOverlay" class="settings-overlay" style="display: none;">
+    <iframe id="settingsFrame" src="settings.html" class="settings-iframe"></iframe>
+  </div>
+  
+  <!-- Disclaimer Overlay (hidden by default) -->
+  <div id="disclaimerOverlay" class="settings-overlay" style="display: none;">
+    <iframe id="disclaimerFrame" src="disclaimer.html" class="settings-iframe"></iframe>
+  </div>
+  
+  <!-- BIN Library Management Modal -->
+  <div id="libraryManagementModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content library-modal">
+      <div class="modal-header">
+        <h2>BIN Library Management</h2>
+        <button class="modal-close" id="closeLibraryModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="library-tabs">
+          <button class="tab-btn active" data-tab="libraries">Libraries</button>
+          <button class="tab-btn" data-tab="create">Create New</button>
+          <button class="tab-btn" data-tab="import">Import</button>
+        </div>
+        
+        <!-- Libraries Tab -->
+        <div class="tab-content active" id="tab-libraries">
+          <div class="library-list" id="libraryList">
+            <!-- Libraries will be populated here -->
+          </div>
+        </div>
+        
+        <!-- Create Tab -->
+        <div class="tab-content" id="tab-create">
+          <div class="form-group">
+            <label>Library Name</label>
+            <input type="text" id="newLibraryName" placeholder="Enter library name">
+          </div>
+          <div class="form-group">
+            <label>BINs (one per line)</label>
+            <textarea id="newLibraryBins" rows="8" placeholder="Enter BINs, one per line
+Examples:
+451286
+625967xxxxxxxxxx"></textarea>
+          </div>
+          <button class="btn-primary" id="createLibraryBtn">Create Library</button>
+        </div>
+        
+        <!-- Import Tab -->
+        <div class="tab-content" id="tab-import">
+          <div class="form-group">
+            <label>Import Library File</label>
+            <div class="file-input-wrapper">
+              <label for="importLibraryFile" class="file-input-label" id="fileInputLabel">
+                <span class="file-input-button">Choose File</span>
+                <span class="file-input-text" id="fileInputText">No file chosen</span>
+              </label>
+            <input type="file" id="importLibraryFile" accept=".binlib,.txt">
+            </div>
+            <p class="help-text">Select an encrypted BIN library file to import</p>
+          </div>
+          <button class="btn-primary" id="importLibraryBtn" disabled>Import Library</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Library Edit Modal -->
+  <div id="libraryEditModal" class="modal-overlay" style="display: none;">
+    <div class="modal-content library-modal">
+      <div class="modal-header">
+        <h2 id="editModalTitle">Edit Library</h2>
+        <button class="modal-close" id="closeEditModal">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Library Name</label>
+          <input type="text" id="editLibraryName" placeholder="Enter library name">
+        </div>
+        <div class="form-group">
+          <label>BINs (one per line)</label>
+          <textarea id="editLibraryBins" rows="10" placeholder="Enter BINs, one per line"></textarea>
+        </div>
+        <div class="modal-actions">
+          <button class="btn-secondary" id="cancelEditBtn">Cancel</button>
+          <button class="btn-primary" id="saveEditBtn">Save Changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>
+

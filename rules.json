@@ -1,0 +1,93 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "addOrReplaceParams": [
+              {
+                "key": "hl",
+                "value": "en-US"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https://[^\\.]*\\.(google\\.com|recaptcha\\.net)/recaptcha",
+      "resourceTypes": ["sub_frame"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "content-security-policy",
+          "operation": "set",
+          "value": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' data: blob:; style-src * 'unsafe-inline' data: blob:; img-src * data: blob:; font-src * data: blob:; connect-src * data: blob:; worker-src * blob: 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval'; child-src * blob: data:; frame-src * blob: data:; object-src *; media-src * data: blob:;"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://checkout.stripe.com/*",
+      "resourceTypes": ["main_frame", "sub_frame", "script", "stylesheet"]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "content-security-policy",
+          "operation": "set",
+          "value": "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' data: blob:; style-src * 'unsafe-inline' data: blob:; img-src * data: blob:; font-src * data: blob:; connect-src * data: blob:; worker-src * blob: 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval'; child-src * blob: data:; frame-src * blob: data:; object-src *; media-src * data: blob:;"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://*.stripe.com/*",
+      "resourceTypes": ["main_frame", "sub_frame", "script", "stylesheet"]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        {
+          "header": "Content-Security-Policy",
+          "operation": "remove"
+        }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*",
+      "resourceTypes": [
+        "main_frame",
+        "sub_frame",
+        "stylesheet",
+        "script",
+        "image",
+        "font",
+        "object",
+        "xmlhttprequest",
+        "ping",
+        "csp_report",
+        "media",
+        "websocket",
+        "webbundle",
+        "other"
+      ]
+    }
+  }
+]

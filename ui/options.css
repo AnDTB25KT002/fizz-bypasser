@@ -1,9 +1,9 @@
 :root {
-  --theme-primary: #4a9eff;
-  --theme-secondary: #6ba3ff;
-  --theme-accent: #8b7fc8;
-  --theme-primary-rgb: 74, 158, 255;
-  --theme-accent-rgb: 139, 127, 200;
+  --theme-primary: #58a6ff;
+  --theme-secondary: #79c0ff;
+  --theme-accent: #a5d6ff;
+  --theme-primary-rgb: 88, 166, 255;
+  --theme-accent-rgb: 165, 214, 255;
 }
 
 * {
